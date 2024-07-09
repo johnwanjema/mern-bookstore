@@ -41,7 +41,6 @@ app.post('/books',async (request, response)=>{
 
 // Get all books
 app.get('/books',async (request, response)=>{
-    console.log(request.body)
     try{
         const books = await Book.find({});
 
@@ -49,6 +48,20 @@ app.get('/books',async (request, response)=>{
             count : books.length,
             data :books
             })
+    }catch(error){
+        console.log(error)
+        response.status(500).send({message : error.message})
+    }
+});
+
+// Get all books
+app.get('/books/:id',async (request, response)=>{
+    try{
+        const { id } = request.params;
+
+        const book = await Book.findById(id);
+
+        return response.status(201).json(book);
     }catch(error){
         console.log(error)
         response.status(500).send({message : error.message})
